@@ -11,15 +11,69 @@ use lambda::error::HandlerError;
 
 mod weather_client;
 
-#[derive(Deserialize, Clone)]
+// Struct that will hold information of the request.
+// When we use an API Gateway as a proxy, which is the default
+// behaviour when we create it from the Lambda website, the request
+// will have a specific format with many different parameters.
+// We're only going to use `queryStringParameters` to check the
+// query string parameters (normally for GET requests) and `body`
+// to check for messages usually coming from POST requests.
+#[derive(Deserialize, Clone, Debug)]
 struct CustomEvent {
-    country: String,
+    // note that we're using serde to help us to change
+    // the names of parameters accordingly to conventions.
+    #[serde(rename = "queryStringParameters")]
+    query_string_parameters: Option<QueryString>,
+    body: Option<String>,
 }
 
-#[derive(Serialize, Clone)]
-struct CustomOutput {
-    message: String,
+#[derive(Deserialize, Clone, Debug)]
+struct QueryString {
+    #[serde(rename = "country")]
+    country: Option<String>,
 }
+
+#[derive(Deserialize, Clone, Debug)]
+struct Body {
+    #[serde(rename = "country")]
+    country: Option<String>,
+}
+
+// Struct used for our function's response.
+// Note again that we're using `serde`.
+// It's also important to notice that you will need to explicitely
+// inform these properties for our API Gateway to work.
+// If you miss some of these properties you will likely get
+// a 502 error.
+#[derive(Serialize, Clone, Debug)]
+struct CustomOutput {
+    #[serde(rename = "isBase64Encoded")]
+    is_base64_encoded: bool,
+    #[serde(rename = "statusCode")]
+    status_code: u16,
+    body: String,
+}
+
+// Just a static method to help us build the `CustomOutput`.
+impl CustomOutput {
+    fn new(body: String) -> Self {
+        CustomOutput {
+            is_base64_encoded: false,
+            status_code: 200,
+            body,
+        }
+    }
+}
+
+// #[derive(Deserialize, Clone)]
+// struct CustomEvent {
+//     country: String,
+// }
+//
+// #[derive(Serialize, Clone)]
+// struct CustomOutput {
+//     message: String,
+// }
 
 fn main() -> Result<(), Box<dyn Error>> {
     simple_logger::init_with_level(log::Level::Info)?;
@@ -28,11 +82,12 @@ fn main() -> Result<(), Box<dyn Error>> {
 }
 
 fn my_handler(e: CustomEvent, c: lambda::Context) -> Result<CustomOutput, HandlerError> {
-    if e.country == "" {
-        error!("Empty country in request {}", c.aws_request_id);
-        return Err(c.new_error("Empty country"));
-    }
-    let weather = weather_client::get_weather(e.country)
-        .map_err(|err|c.new_error(err.to_string().as_str()))?;
-    Ok(CustomOutput { message: weather })
+    info!("Received event: {:?}", e);
+    // if e.country == "" {
+    //     error!("Empty country in request {}", c.aws_request_id);
+    //     return Err(c.new_error("Empty country"));
+    // }
+    // let weather = weather_client::get_weather(e.country)
+    //     .map_err(|err|c.new_error(err.to_string().as_str()))?;
+    Ok(CustomOutput::new("hello".to_owned()))
 }
