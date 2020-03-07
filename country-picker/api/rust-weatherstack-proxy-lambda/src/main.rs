@@ -7,6 +7,7 @@ extern crate serde_derive;
 extern crate simple_logger;
 
 use std::error::Error;
+
 use lambda::error::HandlerError;
 
 mod weather_client;
@@ -75,21 +76,21 @@ fn my_handler(e: CustomEvent, c: lambda::Context) -> Result<CustomOutput, Handle
     info!("Received event: {:?}", e);
 
     let country = e.query_string_parameters
-        .map(|q|q.country)
+        .map(|q| q.country)
         .flatten();
     let country = country.or(e.body);
+    let country = country.map(|s| s.as_str());
 
     match country {
-        Some(country) =>
-            if country == "" {
-                error!("Empty country in request {}", c.aws_request_id);
-                Err(c.new_error("Empty country"))
-            } else {
-                let weather = weather_client::get_weather(country)
-                    .map_err(|err| c.new_error(err.to_string().as_str()))?;
-                Ok(CustomOutput::new(weather))
-            }
-        ,
+        Some("") => {
+            error!("Empty country in request {}", c.aws_request_id);
+            Err(c.new_error("Empty country"))
+        }
+        Some(country) => {
+            let weather = weather_client::get_weather(country)
+                .map_err(|err| c.new_error(err.to_string().as_str()))?;
+            Ok(CustomOutput::new(weather))
+        }
         None => Err(c.new_error("No country"))
     }
 }

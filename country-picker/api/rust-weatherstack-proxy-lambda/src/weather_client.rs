@@ -1,5 +1,5 @@
 
-pub fn get_weather(country:String) -> Result<String, reqwest::Error>  {
+pub fn get_weather(country:&str) -> Result<String, reqwest::Error>  {
     let api_key: &'static str = env!("API_KEY","You forgot to export API_KEY path");
     let url = format!(
         "http://api.weatherstack.com/current?access_key={apiKey}&query={countryName}",
@@ -19,6 +19,6 @@ mod tests {
 
     //#[test]
     fn test_add() {
-        let weather = get_weather("sweden".to_owned());
+        let weather = get_weather("sweden");
     }
 }
