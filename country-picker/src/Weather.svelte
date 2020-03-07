@@ -9,7 +9,6 @@
 
 	function weatherDescriptionToClass(weather) {
 		const description = ucwords(weather.weather_descriptions[0])
-		console.log(description)
 		let iconClass = 'full_clouds'
 		let weatherDescription = description
 		
@@ -80,6 +79,7 @@ section {
 	position: relative;
 	width: 275px;
 	height: 137px;
+	margin-top: -30px;
 }
 
 p {

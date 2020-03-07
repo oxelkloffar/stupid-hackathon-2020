@@ -39,21 +39,12 @@
 		return json.current
 	}
 
-	/*let weather = null
-	async function fetchWeather() {
-		weather = null
-		weather = await getWeather(chosenCountry)
-	}*/
-
 	$: promise = getWeather(chosenCountry)
-
-	//$: weather = getWeather(chosenCountry)
 </script>
 
 
-
 <main>
-	<h1>Country Picker!</h1>
+	<h1>Intuitivest Weather App!</h1>
 
 	<label>
 		Select country by population count
@@ -61,13 +52,11 @@
 	</label>
 
 	{#if chosenCountry != ""}
-		<p>You have chosen {chosenCountry}</p>
+		<h2>{chosenCountry}</h2>
 	{/if}
 
-	<!--<button on:click={fetchWeather}>Hämta vaedret ffs</button>-->
-
 	{#await promise}
-		<p>...waiting</p>
+		<p>Loading...</p>
 	{:then weather}
 		{#if weather != null}
 			<Weather weather={weather} />
@@ -76,3 +65,10 @@
 		<p style="color: red">{error.message}</p>
 	{/await}
 </main>
+
+
+<style>
+	h2, p {
+		margin-left: 25px;
+	}
+</style>
