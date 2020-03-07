@@ -92,7 +92,7 @@ p {
 }
 
 i {
-	background: url(/images/weather_icon_partly_cloudy.svg);
+	background: url(images/weather_icon_partly_cloudy.svg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	width: 140px;
@@ -101,49 +101,49 @@ i {
 	position: absolute;
 }
 i.partly_cloudy {
-	background: url(/images/weather_icon_partly_cloudy.svg);
+	background: url(images/weather_icon_partly_cloudy.svg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	top: 19px !important;
 }
 i.full_clouds {
-	background: url(/images/weather_icon_full_clouds.svg);
+	background: url(images/weather_icon_full_clouds.svg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	top: 19px !important;
 }
 i.night {
-	background: url(/images/weather_icon_night.svg);
+	background: url(images/weather_icon_night.svg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	top: 16px !important;
 }
 i.sun_rain_clouds {
-	background: url(/images/weather_icon_sun_rain_clouds.svg);
+	background: url(images/weather_icon_sun_rain_clouds.svg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	top: 15px !important;
 }
 i.full_sun {
-	background: url(/images/weather_icon_full_sun.svg);
+	background: url(images/weather_icon_full_sun.svg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	top: 17px !important;
 }
 i.rainy {
-	background: url(/images/weather_icon_rainy.svg);
+	background: url(images/weather_icon_rainy.svg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	top: 13px !important;
 }
 i.cloud_slight_rain {
-	background: url(/images/weather_icon_cloud_slight_rain.svg);
+	background: url(images/weather_icon_cloud_slight_rain.svg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	top: 13px !important;
 }
 i.thunder {
-	background: url(/images/weather_icon_thunder.svg);
+	background: url(images/weather_icon_thunder.svg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	top: 0px;
