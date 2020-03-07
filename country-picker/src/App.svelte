@@ -31,7 +31,7 @@
 		}
 
 		const apiKey = process.env.apiKey
-		const apiUrl = `http://api.weatherstack.com/current?access_key=${apiKey}&query=${countryName}`
+		const apiUrl = `https://api.weatherstack.com/current?access_key=${apiKey}&query=${countryName}`
 
 		const response = await fetch(apiUrl)
 		const json = await response.json()
