@@ -13,8 +13,7 @@ mod weather_client;
 
 #[derive(Deserialize, Clone)]
 struct CustomEvent {
-    #[serde(rename = "firstName")]
-    first_name: String,
+    country: String,
 }
 
 #[derive(Serialize, Clone)]
@@ -29,9 +28,11 @@ fn main() -> Result<(), Box<dyn Error>> {
 }
 
 fn my_handler(e: CustomEvent, c: lambda::Context) -> Result<CustomOutput, HandlerError> {
-    if e.first_name == "" {
-        error!("Empty first name in request {}", c.aws_request_id);
-        return Err(c.new_error("Empty first name"));
+    if e.country == "" {
+        error!("Empty country in request {}", c.aws_request_id);
+        return Err(c.new_error("Empty country"));
     }
-    Ok(CustomOutput { message: format!("Hello, {}!", e.first_name) })
+    let weather = weather_client::get_weather(e.country)
+        .map_err(|err|c.new_error(err.to_string().as_str()))?;
+    Ok(CustomOutput { message: weather })
 }
