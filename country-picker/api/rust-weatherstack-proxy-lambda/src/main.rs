@@ -65,16 +65,6 @@ impl CustomOutput {
     }
 }
 
-// #[derive(Deserialize, Clone)]
-// struct CustomEvent {
-//     country: String,
-// }
-//
-// #[derive(Serialize, Clone)]
-// struct CustomOutput {
-//     message: String,
-// }
-
 fn main() -> Result<(), Box<dyn Error>> {
     simple_logger::init_with_level(log::Level::Info)?;
     lambda!(my_handler);
@@ -83,11 +73,23 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 fn my_handler(e: CustomEvent, c: lambda::Context) -> Result<CustomOutput, HandlerError> {
     info!("Received event: {:?}", e);
-    // if e.country == "" {
-    //     error!("Empty country in request {}", c.aws_request_id);
-    //     return Err(c.new_error("Empty country"));
-    // }
-    // let weather = weather_client::get_weather(e.country)
-    //     .map_err(|err|c.new_error(err.to_string().as_str()))?;
-    Ok(CustomOutput::new("hello".to_owned()))
+
+    let country = e.query_string_parameters
+        .map(|q|q.country)
+        .flatten();
+    let country = country.or(e.body);
+
+    match country {
+        Some(country) =>
+            if country == "" {
+                error!("Empty country in request {}", c.aws_request_id);
+                Err(c.new_error("Empty country"))
+            } else {
+                let weather = weather_client::get_weather(country)
+                    .map_err(|err| c.new_error(err.to_string().as_str()))?;
+                Ok(CustomOutput::new(weather))
+            }
+        ,
+        None => Err(c.new_error("No country"))
+    }
 }
