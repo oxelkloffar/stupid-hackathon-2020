@@ -1,8 +1,9 @@
 
 pub fn get_weather(country:String) -> Result<String, reqwest::Error>  {
+    let api_key: &'static str = env!("API_KEY","You forgot to export API_KEY path");
     let url = format!(
         "http://api.weatherstack.com/current?access_key={apiKey}&query={countryName}",
-        apiKey="5b4511e0bc65a0fdf3c4349d57a1ad2e",
+        apiKey=api_key,
         countryName=country,
     );
     let body = reqwest::blocking::get(url.as_str())?
@@ -16,7 +17,7 @@ pub fn get_weather(country:String) -> Result<String, reqwest::Error>  {
 mod tests {
     use super::*;
 
-    #[test]
+    //#[test]
     fn test_add() {
         let weather = get_weather("sweden".to_owned());
     }

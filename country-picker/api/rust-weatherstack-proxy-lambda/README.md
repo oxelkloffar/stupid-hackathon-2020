@@ -2,7 +2,7 @@
 
 ## Building
 ```
-./builds.sh
+./builds.sh <api key>
 ```
 
 ## Running locally
@@ -21,4 +21,8 @@ $ unzip -o \
 # provide an event payload via stdin (typically a json blob)
 
 # Ctrl-D to yield control back to your function
+```
+example payload:
+```
+{"queryStringParameters":{"country":"sweden"}}
 ```
