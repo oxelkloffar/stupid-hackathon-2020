@@ -3,8 +3,10 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import replace from '@rollup/plugin-replace';
 
 const production = !process.env.ROLLUP_WATCH;
+const apiKey = process.env.WEATHERSTACK_API_KEY;
 
 export default {
 	input: 'src/main.js',
@@ -15,6 +17,15 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		replace({
+      // 2 level deep object should be stringify
+      process: JSON.stringify({
+        env: {
+          apiKey,
+        }
+      }),
+		}),
+		
 		svelte({
 			// enable run-time checks when not in production
 			dev: !production,
