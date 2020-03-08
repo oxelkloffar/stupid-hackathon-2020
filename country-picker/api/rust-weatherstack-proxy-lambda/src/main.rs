@@ -65,7 +65,7 @@ struct Header {
 // Just a static method to help us build the `CustomOutput`.
 impl CustomOutput {
     fn new(body: String) -> Self {
-        let cors = "Access-Control-Allow-Origin: *";
+        let cors = "*";
         CustomOutput {
             is_base64_encoded: false,
             status_code: 200,
