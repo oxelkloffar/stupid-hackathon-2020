@@ -1,6 +1,7 @@
 import * as cdk from '@aws-cdk/core'
 import { LambdaRestApi, EndpointType, DomainName } from '@aws-cdk/aws-apigateway'
-import { HostedZone, CnameRecord } from '@aws-cdk/aws-route53'
+import { HostedZone, RecordTarget, ARecord } from '@aws-cdk/aws-route53'
+import { ApiGateway } from '@aws-cdk/aws-route53-targets'
 import { DnsValidatedCertificate, ValidationMethod } from '@aws-cdk/aws-certificatemanager'
 import { Function, Runtime, Code } from '@aws-cdk/aws-lambda'
 import * as path from 'path'
@@ -42,6 +43,10 @@ export class WeatherApiStack extends cdk.Stack {
       parameters: {
         'country': 'string'
       },
+      domainName: {
+        domainName: subDomain,
+        certificate
+      },
       endpointConfiguration: {
         types: [EndpointType.REGIONAL]
       },
@@ -50,12 +55,10 @@ export class WeatherApiStack extends cdk.Stack {
       }
     })
 
-    const domain = new DomainName(this, 'WeatherApiSubDomain', {
-      domainName: subDomain,
-      certificate,
-      endpointType: EndpointType.REGIONAL
+    const aRecord = new ARecord(this, 'WeatherApiAName', {
+      zone: hostedZone,
+      recordName: subDomain,
+      target: RecordTarget.fromAlias(new ApiGateway(api))
     })
-    
-    domain.addBasePathMapping(api, { basePath: 'v1'})
   }
 }

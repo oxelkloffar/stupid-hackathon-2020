@@ -31,7 +31,7 @@
 		}
 
 		const countryParam = encodeURI(countryName)
-		const apiUrl = `https://g1zzj65pw8.execute-api.eu-north-1.amazonaws.com/prod/?country=${countryParam}`
+		const apiUrl = `https://weatherstack-proxy-api.aourell.se/v1?country=${countryParam}`
 
 		const response = await fetch(apiUrl)
 		const json = await response.json()
