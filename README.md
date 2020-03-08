@@ -3,6 +3,11 @@
 ## What is this?
 This is a mono-repo for all our projects/ideas for the Stupid Hackathon Sweden 2020... and we apparently had time for 1 project, in the end.
 
+#### Collaborators
+* Oskar Aourell, https://github.com/Osaou
+* Rickard Tjerngren, https://github.com/RichoDemus
+* Elin Hammarstedt, https://github.com/ehammarstedt
+
 ## Weather App
 In the `country-picker` directory, you can find our awesome contribution: *an app that tells you the weather*... given you can provide the desired location, of course :)
 
