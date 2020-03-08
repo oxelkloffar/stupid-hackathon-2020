@@ -52,16 +52,19 @@ struct CustomOutput {
     is_base64_encoded: bool,
     #[serde(rename = "statusCode")]
     status_code: u16,
+    headers: Vec<String>,
     body: String,
 }
 
 // Just a static method to help us build the `CustomOutput`.
 impl CustomOutput {
     fn new(body: String) -> Self {
+        let cors = "Access-Control-Allow-Origin: *";
         CustomOutput {
             is_base64_encoded: false,
             status_code: 200,
             body,
+            headers: vec![cors.to_owned()],
         }
     }
 }
@@ -79,7 +82,7 @@ fn my_handler(e: CustomEvent, c: lambda::Context) -> Result<CustomOutput, Handle
         .map(|q| q.country)
         .flatten();
     let country = country.or(e.body);
-    let country = country.map(|s| s.as_str());
+    let country = country.as_deref();
 
     match country {
         Some("") => {
