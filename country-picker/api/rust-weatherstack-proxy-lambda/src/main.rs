@@ -52,8 +52,14 @@ struct CustomOutput {
     is_base64_encoded: bool,
     #[serde(rename = "statusCode")]
     status_code: u16,
-    headers: Vec<String>,
+    headers: Header,
     body: String,
+}
+
+#[derive(Serialize, Clone, Debug)]
+struct Header {
+    #[serde(rename = "Access-Control-Allow-Origin")]
+    cors: String,
 }
 
 // Just a static method to help us build the `CustomOutput`.
@@ -64,7 +70,7 @@ impl CustomOutput {
             is_base64_encoded: false,
             status_code: 200,
             body,
-            headers: vec![cors.to_owned()],
+            headers: Header {cors: cors.to_owned()},
         }
     }
 }
