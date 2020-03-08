@@ -30,8 +30,8 @@
 			return Promise.resolve(null)
 		}
 
-		const apiKey = process.env.apiKey
-		const apiUrl = `https://api.weatherstack.com/current?access_key=${apiKey}&query=${countryName}`
+		const countryParam = encodeURI(countryName)
+		const apiUrl = `https://g1zzj65pw8.execute-api.eu-north-1.amazonaws.com/prod/?country=${countryParam}`
 
 		const response = await fetch(apiUrl)
 		const json = await response.json()
